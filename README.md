@@ -1,43 +1,159 @@
-# Investment Recommendation System using Machine Learning
+# Investment Buddy
 
-An end-to-end predictive classification pipeline that maps personal financial metrics to optimal asset investment strategies (Stocks, ETFs, Crypto, Bonds, Mutual Funds, Fixed Deposits).
+## Investment Recommendation System using Machine Learning
 
----
-
-## 📌 Project Overview
-
-| Section | Key Technical Details |
-| :--- | :--- |
-| **Objective** | To construct an end-to-end machine learning pipeline that profiles users based on financial data and accurately classifies them into tailored investment strategies. |
-| **Approach** | • Cleaned and preprocessed synthetic transactional/personal finance records by handling missing entries with median/mode imputation and removing data anomalies via the **Interquartile Range (IQR)** method.<br>• Engineered **10 advanced financial features** (e.g., *Savings Ratio*, *Debt Ratio*, *Disposable Income*, *Emergency Fund Months*, and a composite *Financial Health Score*) to introduce robust domain-specific variance.<br>• Programmed a customized multi-class rule engine to establish a high-fidelity synthetic ground truth target mimicking automated advisory algorithms.<br>• Evaluated **5 classification models** (Logistic Regression, Decision Trees, Random Forest, Gradient Boosting, and **XGBoost**) using stratified splits and `StandardScaler`. <br>• Optimised the top framework using **GridSearchCV** and serialized the trained artifacts (`joblib`) for terminal deployment. |
-| **Results** | • Identified driving financial indicators via **Global Feature Importance Analysis**, mapping exactly how variance in debt and savings ratios dictates allocation.<br>• Achieved optimal multi-class accuracy, precision, and recall scores across all engineered investment categories with solid model generalization on unseen test datasets. |
+An end-to-end machine learning project that recommends the best investment option
+(Stocks, Mutual Fund, Fixed Deposit, Cryptocurrency, or Government Bond) based on a person's financial profile.
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## Project Overview
 
-*   **Language:** Python
-*   **Libraries:** Pandas, NumPy, Scikit-Learn, XGBoost, Matplotlib, Seaborn, Joblib
-
----
-
-## 🚀 Pipeline Structure
-
-1. **Part 1–4: Data Exploration:** Structural validation, profiling individual unique counts, and missing value verification.
-2. **Part 5: Exploratory Data Analysis (EDA):** Univariate distributions, bivariate scatter plots, segmentation box plots, and correlation matrix visualizations.
-3. **Part 6: Data Cleaning:** Median/mode imputation and outlier extraction using statistical boundaries.
-4. **Part 7: Feature Engineering:** Development of economic financial performance tracking ratios.
-5. **Part 8: Rule-Based Target Creation:** Simulating asset programmatic portfolio matching logic.
-6. **Part 9: Preprocessing:** Categorical label encoding, stratified data split, and feature normalization.
-7. **Part 10–12: Modeling & Optimization:** Comparative evaluation across 5 algorithmic structures followed by hyperparameter tuning via `GridSearchCV`.
-8. **Part 13: Model Serialization:** Exporting model binaries and encoders into standalone `.pkl` production files.
+| Section | Details |
+| --- | --- |
+| **Objective** | To build an ML-based multi-class classification model that recommends the best investment option from 5 categories based on a user's complete financial profile |
+| **Approach** | Preprocessed 32,424 rows x 20 features of synthetic personal finance data using LabelEncoder and StandardScaler for ML readiness |
+| | Engineered 3 domain-specific financial features — Disposable Income, Expense Ratio, and Financial Health Score — from raw income and credit data |
+| | Generated a 5-class target variable using rule-based financial logic on income, credit score, age, and debt |
+| | Trained and compared 3 models and tuned the best using GridSearchCV with 3-fold cross-validation |
+| **Results** | Achieved 99.83% test accuracy with a tuned Random Forest classifier across all 5 investment classes on 6,485 test samples |
+| | Obtained per-class F1-scores of 0.92–1.00, with macro precision 0.99 and recall 0.97 |
+| | GridSearchCV identified optimal params {n_estimators: 100, max_depth: None, min_samples_split: 5} with 99.73% CV accuracy |
+| | Built an interactive prediction interface accepting 13 financial inputs with confidence score and estimated annual return range |
 
 ---
 
-## 📦 Saved Artifacts
+## Tech Stack
 
-The pipeline automatically serializes the following components for terminal predictions:
-*   `investment_model.pkl` (The final trained, hyperparameter-tuned model)
-*   `scaler.pkl` (The trained `StandardScaler` instance)
-*   `target_encoder.pkl` (The label encoder for output recommendations)
-*   `feature_encoders.pkl` (Dictionary containing individual encoders for categorical inputs)
+- **Language:** Python
+- **Notebook:** Jupyter Notebook
+- **Libraries:** Pandas, NumPy, Scikit-Learn, Matplotlib, Seaborn, Joblib
+
+---
+
+## Dataset
+
+- **File:** `synthetic_personal_finance_dataset.csv`
+- **Rows:** 32,424
+- **Features:** 20 (age, income, expenses, savings, credit score, loan details, employment, education, region, etc.)
+- **Target:** `Investment_Recommendation` — created using rule-based financial logic (5 classes)
+
+---
+
+## ML Pipeline
+
+| Part | Description |
+| --- | --- |
+| Part 1 | Import Libraries |
+| Part 2 | Load Dataset |
+| Part 3 | Initial Exploration (shape, info, describe, missing values, duplicates) |
+| Part 4 | Exploratory Data Analysis (histograms, heatmap, countplots, boxplots, distributions) |
+| Part 5 | Data Cleaning (handle missing values) |
+| Part 6 | Feature Engineering (Disposable Income, Expense Ratio, Financial Health Score) |
+| Part 7 | Target Variable Creation using financial rules |
+| Part 8 | Preprocessing (LabelEncoding, Train-Test Split, StandardScaler) |
+| Part 9 | Train and Compare Models (Logistic Regression, Decision Tree, Random Forest) |
+| Part 10 | Hyperparameter Tuning with GridSearchCV |
+| Part 11 | Model Evaluation (Accuracy, Classification Report, Confusion Matrix, Feature Importance) |
+| Part 12 | Save Model (.pkl files) |
+| Part 13 | Personalized Investment Recommendation (user input + prediction) |
+
+---
+
+## Feature Engineering
+
+Three new features were created from existing columns:
+
+| Feature | Formula |
+| --- | --- |
+| Disposable Income | Monthly Income - Monthly Expenses |
+| Expense Ratio | Monthly Expenses / Monthly Income |
+| Financial Health Score | (Credit Score / 850) x 100 |
+
+---
+
+## Target Variable — Investment Rules
+
+The target column was created using the following financial logic:
+
+| Condition | Recommendation |
+| --- | --- |
+| Credit >= 750, Income >= $6000, Savings Ratio >= 6, DTI <= 0.3 | Stocks |
+| Age <= 30, Income >= $4500, Credit >= 620, DTI <= 0.5 | Cryptocurrency |
+| Credit >= 650, Income >= $4000, DTI <= 0.6 | Mutual Fund |
+| Credit >= 500, Income >= $2000 | Fixed Deposit |
+| Everything else | Government Bond |
+
+---
+
+## Model Results
+
+| Model | Accuracy |
+| --- | --- |
+| Decision Tree | 99.91% |
+| Random Forest | 99.88% |
+| Logistic Regression | 78.97% |
+
+**Best Model after GridSearchCV tuning — Random Forest**
+
+| Metric | Score |
+| --- | --- |
+| Test Accuracy | 99.83% |
+| CV Accuracy | 99.73% |
+| Macro Precision | 0.99 |
+| Macro Recall | 0.97 |
+| Macro F1-Score | 0.98 |
+
+**Best Parameters:** `n_estimators=100`, `max_depth=None`, `min_samples_split=5`
+
+---
+
+## Saved Files
+
+| File | Description |
+| --- | --- |
+| `investment_model.pkl` | Trained and tuned Random Forest model |
+| `scaler.pkl` | Fitted StandardScaler |
+| `target_encoder.pkl` | LabelEncoder for the target variable |
+| `label_encoders.pkl` | LabelEncoders for categorical input features |
+
+---
+
+## How to Run
+
+1. Clone or download the project folder
+2. Make sure `synthetic_personal_finance_dataset.csv` is in the same folder as the notebook
+3. Install dependencies:
+
+```
+pip install pandas numpy matplotlib seaborn scikit-learn joblib
+```
+
+4. Open `investment_buddy.ipynb` in Jupyter Notebook
+5. Run all cells in order (Kernel > Restart & Run All)
+6. When you reach Part 13, enter your financial details to get your recommendation
+
+---
+
+## Project Structure
+
+```
+Investment_Buddy_ML/
+│
+├── investment_buddy.ipynb                   <- Main Jupyter Notebook
+├── synthetic_personal_finance_dataset.csv   <- Dataset
+├── investment_model.pkl                     <- Saved trained model
+├── scaler.pkl                               <- Saved scaler
+├── target_encoder.pkl                       <- Saved target encoder
+├── label_encoders.pkl                       <- Saved feature encoders
+└── README.md                                <- Project documentation
+```
+
+---
+
+## Future Improvements
+
+- Add more financial features like net worth, investment history, and risk tolerance
+- Use a larger, real-world dataset from financial APIs
+- Try advanced models like XGBoost or LightGBM for comparison
+- Build a simple web interface using Streamlit for easier access
