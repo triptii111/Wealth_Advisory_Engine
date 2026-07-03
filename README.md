@@ -84,30 +84,6 @@ The target column was created using the following financial logic:
 | Credit >= 500, Income >= $2000 | Fixed Deposit |
 | Everything else | Government Bond |
 
----
-
-## Model Results
-
-| Model | Accuracy |
-| --- | --- |
-| Decision Tree | 99.91% |
-| Random Forest | 99.88% |
-| Logistic Regression | 78.97% |
-
-**Best Model after GridSearchCV tuning — Random Forest**
-
-| Metric | Score |
-| --- | --- |
-| Test Accuracy | 99.83% |
-| CV Accuracy | 99.73% |
-| Macro Precision | 0.99 |
-| Macro Recall | 0.97 |
-| Macro F1-Score | 0.98 |
-
-**Best Parameters:** `n_estimators=100`, `max_depth=None`, `min_samples_split=5`
-
----
-
 ## Saved Files
 
 | File | Description |
@@ -135,25 +111,3 @@ pip install pandas numpy matplotlib seaborn scikit-learn joblib
 
 ---
 
-## Project Structure
-
-```
-Investment_Buddy_ML/
-│
-├── investment_buddy.ipynb                   <- Main Jupyter Notebook
-├── synthetic_personal_finance_dataset.csv   <- Dataset
-├── investment_model.pkl                     <- Saved trained model
-├── scaler.pkl                               <- Saved scaler
-├── target_encoder.pkl                       <- Saved target encoder
-├── label_encoders.pkl                       <- Saved feature encoders
-└── README.md                                <- Project documentation
-```
-
----
-
-## Future Improvements
-
-- Add more financial features like net worth, investment history, and risk tolerance
-- Use a larger, real-world dataset from financial APIs
-- Try advanced models like XGBoost or LightGBM for comparison
-- Build a simple web interface using Streamlit for easier access
