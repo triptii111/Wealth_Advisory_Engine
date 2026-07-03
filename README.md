@@ -1,6 +1,4 @@
-# Investment Buddy
-
-## Investment Recommendation System using Machine Learning
+# Wealth Advisory Engine
 
 An end-to-end machine learning project that recommends the best investment option
 (Stocks, Mutual Fund, Fixed Deposit, Cryptocurrency, or Government Bond) based on a person's financial profile.
